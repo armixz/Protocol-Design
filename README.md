@@ -2,7 +2,7 @@
  1. Add names to RFC
  2. Design protocol operation (message types/message codes)
  3. Choose implementation language
- 4. Setup mininet network architecture 
+ 4. ~~Setup mininet network architecture~~
 # RFC formatting rules
 ## General
  1. ASCII, 72 char/line.  
