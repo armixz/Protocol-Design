@@ -2,7 +2,7 @@ import socket
 import os
 import Services
 
-SRVR_IP = '127.0.0.1'
+SRVR_IP = '10.0.0.2'
 REND_PORT = 59001
 CTRL_PORT = 59002
 MSG_SIZE = 1000
