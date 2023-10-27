@@ -1,16 +1,10 @@
-# TODO
- 1. Add names to RFC
- 2. ~~Design protocol operation (message types/message codes)~~
- 3. ~~Choose implementation language~~
- 4. ~~Setup mininet network architecture~~
- 5. Build Application
- 6. 
-# RFC formatting rules
-## General
- 1. ASCII, 72 char/line.  
- 2. 58 lines per page, followed by FF (^L).  
- 3. No overstriking or underlining.  
- 4. No “filling” or (added) hyphenation across a line.  
- 5. <.><sp><sp> between sentences.  
- 6. No footnotes.
- 7. Referenecs in the form[1].
+# Program description
+Our application comprises the controller, the renderer, and the server. The controller can request a list of available files and then render a file. Additionally, while a file is being rendered, the controller can choose to have the rendering pause, resume, or restart. The server has access to all the files that can be rendered; upon request, it will send a file to the renderer in portions. The renderer receives each piece and prints the contents as soon as they arrive. The server is also responsible for managing the pause, resume, and restart functions when the controller requests each. The three entities use sockets to communicate with each other.
+  
+## Algorithms and Techniques
+Our program is written in Python with the 3.4.0 interpreter version in mind. This is the latest version that the mininet VM natively supports.  
+The hosts communicate using UDP sockets. The controller has a single socket to send messages to the render and server. The server has only one socket to communicate with the renderer and controller. The render, however, has two sockets. One for the server and one for the controller. This is because messages must be received concurrently.  
+
+The controller, renderer and server all have a similar architecture. They all have a while loop which is controlled by the exit command given by the user. If the user chooses to exit the controller, messages will be sent to the render and server, which will cause their while loops to break. Inside each while loop, there is a socket listening for messages from the other hosts. When a message is received, it is compared in an if-else block until a match is found. Each host has different functionalities when a match is found, depending on the message type received.  
+
+All three hosts must complete specific processes concurrently. The controller and renderer create a new thread inside the primary process. The thread in the controller and renderer exists for the lifetime of a rendering session. The threads use global variables as a form of communication. The server, however, creates a separate process for every requested file. The processes use shared memory as a form of communication.
